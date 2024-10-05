@@ -61,15 +61,33 @@ const register = async (req, res) => {
     });
   }
 
-  const user = await User.create({
-    phone_number: phone_number,
+  //check the phone number is alreay excit
+
+  const is_phonenumber = await User.findOne({
+    phone_number,
   });
 
+  if (is_phonenumber) {
+    return res.json({
+      status: "failed",
+      message: "Phone number is already exist!",
+      data: [],
+    });
+  }
+
+  const otp_code = Math.random() * 100000;
+
+  const user = await User.create({
+    phone_number: phone_number,
+    otp_code,
+  });
   // const user = await User.create({
   //   name,
   //   email,
   //   password: bcrypt.hashSync(password, 10),
   // });
+
+  // send otp
 
   res.json({
     status: "success",
@@ -77,8 +95,6 @@ const register = async (req, res) => {
     data: {
       user: {
         id: user.id,
-        name: user.name,
-        email: user.email,
       },
     },
   });

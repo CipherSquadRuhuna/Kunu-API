@@ -7,7 +7,6 @@ const User = (sequelize, DataTypes) => {
     {
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
         unique: true,
       },
       phone_number: {
@@ -18,12 +17,14 @@ const User = (sequelize, DataTypes) => {
       district: {
         type: DataTypes.STRING,
       },
-      minicipal_council: {
+      municipal_council: {
         type: DataTypes.STRING,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
+      },
+      otp_code: {
+        type: DataTypes.NUMBER,
       },
     },
     {
