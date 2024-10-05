@@ -2,7 +2,6 @@ const { JWT_SECRET } = process.env;
 const db = require("../models/index.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { where } = require("sequelize");
 
 const { User } = db;
 
