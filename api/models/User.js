@@ -26,6 +26,9 @@ const User = (sequelize, DataTypes) => {
       otp_code: {
         type: DataTypes.NUMBER,
       },
+      is_verified: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       sequelize,

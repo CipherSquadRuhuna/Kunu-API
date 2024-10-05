@@ -38,3 +38,43 @@ module.exports = {
     await queryInterface.bulkDelete("users", null, {});
   },
 };
+("use strict");
+
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    // Insert seed data into the 'users' table
+    await queryInterface.bulkInsert(
+      "users",
+      [
+        {
+          name: "John Doe",
+          phone_number: "1234567890",
+          district: "Colombo",
+          municipal_council: "Colombo Municipal Council",
+          password: "password123", // Use a hashed password in production
+          otp_code: "123456",
+          is_verified: false, // Set initial value to false
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Jane Smith",
+          phone_number: "0987654321",
+          district: "Galle",
+          municipal_council: "Galle Municipal Council",
+          password: "password456", // Use a hashed password in production
+          otp_code: "654321",
+          is_verified: true, // This user is verified
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+  },
+
+  down: async (queryInterface, Sequelize) => {
+    // Delete the seed data from the 'users' table
+    await queryInterface.bulkDelete("users", null, {});
+  },
+};
