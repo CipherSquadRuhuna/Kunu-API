@@ -11,13 +11,11 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true, // Add unique constraint
       },
       phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true, // Add unique constraint
+        unique: true,
       },
       district: {
         type: Sequelize.STRING,
@@ -27,7 +25,9 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+      },
+      otp_code: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
