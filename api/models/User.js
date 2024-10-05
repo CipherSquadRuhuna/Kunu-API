@@ -5,6 +5,11 @@ const User = (sequelize, DataTypes) => {
   class User extends Model {}
   User.init(
     {
+      id: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
+        primaryKey: true,
+      },
       name: {
         type: DataTypes.STRING,
         unique: true,
@@ -28,6 +33,10 @@ const User = (sequelize, DataTypes) => {
       },
       is_verified: {
         type: DataTypes.BOOLEAN,
+      },
+      nic: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     },
     {

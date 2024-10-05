@@ -2,6 +2,7 @@ const { JWT_SECRET } = process.env;
 const db = require("../models/index.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { where } = require("sequelize");
 
 const { User } = db;
 
@@ -142,4 +143,31 @@ const verifyOTP = async (req, res) => {
   });
 };
 
-module.exports = { login, register, verifyOTP };
+const updateNameNIC = async (req, res) => {
+  const { user_id, full_name, nic } = req.body;
+
+  console.log(user_id);
+
+  const user = await User.findByPk(user_id);
+
+  if (!user) {
+    return res.json({
+      status: "failed",
+      message: "Invalid user id",
+      data: [],
+    });
+  }
+
+  user.name = full_name;
+  user.nic = nic;
+
+  await user.save();
+
+  res.json({
+    status: "success",
+    message: "Name and NIC update success",
+    data: [],
+  });
+};
+
+module.exports = { login, register, verifyOTP, updateNameNIC };

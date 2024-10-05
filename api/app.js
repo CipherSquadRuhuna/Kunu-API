@@ -10,7 +10,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
 app.get("/", checkServerStatus);
 
 app.use("/api/v1/auth", Authroutes);
