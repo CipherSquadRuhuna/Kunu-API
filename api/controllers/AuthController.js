@@ -131,6 +131,10 @@ const verifyOTP = async (req, res) => {
     });
   }
 
+  // update the record as verified
+  user.is_verified = 1;
+  await user.save();
+
   return res.json({
     status: "success",
     message: "OTP verified!",
