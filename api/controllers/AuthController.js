@@ -64,7 +64,9 @@ const register = async (req, res) => {
   //check the phone number is alreay excit
 
   const is_phonenumber = await User.findOne({
-    phone_number,
+    where: {
+      phone_number,
+    },
   });
 
   if (is_phonenumber) {
@@ -75,17 +77,12 @@ const register = async (req, res) => {
     });
   }
 
-  const otp_code = Math.random() * 100000;
+  const otp_code = Math.floor(Math.random() * 100000);
 
   const user = await User.create({
     phone_number: phone_number,
     otp_code,
   });
-  // const user = await User.create({
-  //   name,
-  //   email,
-  //   password: bcrypt.hashSync(password, 10),
-  // });
 
   // send otp
 
@@ -100,4 +97,48 @@ const register = async (req, res) => {
   });
 };
 
-module.exports = { login, register };
+const verifyOTP = async (req, res) => {
+  const { phone_number, otp } = req.body;
+
+  console.log(phone_number, otp);
+
+  if (!otp || otp == "") {
+    return res.json({
+      status: "failed",
+      message: "OTP is required",
+      data: [],
+    });
+  }
+
+  const user = await User.findOne({
+    where: {
+      phone_number,
+    },
+  });
+
+  if (!user) {
+    return res.json({
+      status: "failed",
+      message: "Invalid phone number",
+      data: [],
+    });
+  }
+
+  console.log(user.otp_code, otp);
+  if (user.otp_code !== otp) {
+    // todo: increase otp attempt
+    return res.json({
+      status: "failed",
+      message: "Invalid otp",
+      data: [],
+    });
+  }
+
+  return res.json({
+    status: "success",
+    message: "OTP verified!",
+    data: [],
+  });
+};
+
+module.exports = { login, register, verifyOTP };
