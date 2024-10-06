@@ -1,31 +1,29 @@
-const { JWT_SECRET } = process.env;
 const db = require("../models/index.js");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-const { User } = db;
+const {
+  findUserById,
+  findUserByPhoneNumber,
+  isUserAlreadyExist,
+  createUser,
+} = require("../services/userService.js");
+const {
+  comparePassword,
+  generateToken,
+  hashPassword,
+} = require("../services/authService.js");
+
+// const { User } = db;
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { phone_number, password } = req.body;
 
-  if (!email || email == "" || !password || password == "") {
-    return res.json({
-      status: "failed",
-      message: "Empty credientials",
-    });
-  }
-
-  const user = await User.findOne({
-    where: {
-      email,
-    },
-  });
+  const user = await findUserByPhoneNumber(phone_number);
 
   if (!user) {
     return res.status(401).json({ message: "Invalid email or password" });
   }
 
-  const isauth = bcrypt.compareSync(password, user.password);
+  const isauth = comparePassword(password, user.password);
 
   if (!isauth) {
     return res.status(401).json({
@@ -35,7 +33,7 @@ const login = async (req, res) => {
     });
   }
 
-  const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" });
+  const token = generateToken({ id: user.id }, "1h");
 
   res.json({
     status: "success",
@@ -61,15 +59,9 @@ const register = async (req, res) => {
     });
   }
 
-  //check the phone number is alreay excit
+  const is_user = await isUserAlreadyExist(phone_number);
 
-  const is_phonenumber = await User.findOne({
-    where: {
-      phone_number,
-    },
-  });
-
-  if (is_phonenumber) {
+  if (is_user) {
     return res.json({
       status: "failed",
       message: "Phone number is already exist!",
@@ -78,13 +70,7 @@ const register = async (req, res) => {
   }
 
   const otp_code = Math.floor(Math.random() * 100000);
-
-  const user = await User.create({
-    phone_number: phone_number,
-    otp_code,
-  });
-
-  // send otp
+  const user = await createUser({ phone_number: phone_number, otp_code });
 
   res.json({
     status: "success",
@@ -108,11 +94,7 @@ const verifyOTP = async (req, res) => {
     });
   }
 
-  const user = await User.findOne({
-    where: {
-      phone_number,
-    },
-  });
+  const user = await findUserByPhoneNumber(phone_number);
 
   if (!user) {
     return res.json({
@@ -145,9 +127,7 @@ const verifyOTP = async (req, res) => {
 const updateNameNIC = async (req, res) => {
   const { user_id, full_name, nic } = req.body;
 
-  console.log(user_id);
-
-  const user = await User.findByPk(user_id);
+  const user = await findUserById(user_id);
 
   if (!user) {
     return res.json({
@@ -181,7 +161,7 @@ const updatePassword = async (req, res) => {
     });
   }
 
-  const user = await User.findByPk(user_id);
+  const user = await findUserById(user_id);
   if (!user) {
     return res.json({
       status: "failed",
@@ -190,7 +170,7 @@ const updatePassword = async (req, res) => {
     });
   }
 
-  user.password = bcrypt.hashSync(password, 10);
+  user.password = hashPassword(password);
   await user.save();
 
   res.json({
@@ -199,4 +179,5 @@ const updatePassword = async (req, res) => {
     data: [],
   });
 };
+
 module.exports = { login, register, verifyOTP, updateNameNIC, updatePassword };
