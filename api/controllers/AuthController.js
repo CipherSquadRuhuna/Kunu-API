@@ -169,4 +169,34 @@ const updateNameNIC = async (req, res) => {
   });
 };
 
-module.exports = { login, register, verifyOTP, updateNameNIC };
+// implement authenticated middleware
+const updatePassword = async (req, res) => {
+  const { password, user_id } = req.body;
+
+  if (!password || password == "") {
+    return res.json({
+      status: "failed",
+      message: "Password should not be empty",
+      data: [],
+    });
+  }
+
+  const user = await User.findByPk(user_id);
+  if (!user) {
+    return res.json({
+      status: "failed",
+      message: "user not found",
+      data: [],
+    });
+  }
+
+  user.password = bcrypt.hashSync(password, 10);
+  await user.save();
+
+  res.json({
+    status: "success",
+    message: "password updated successfuly.",
+    data: [],
+  });
+};
+module.exports = { login, register, verifyOTP, updateNameNIC, updatePassword };
