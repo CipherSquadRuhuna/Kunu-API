@@ -1,3 +1,5 @@
+const db = require("../models/index.js");
+
 const { District } = require("../models");
 
 // Create a new district
