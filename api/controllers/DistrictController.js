@@ -1,4 +1,4 @@
-const { District } = require('../models');
+const { District } = require("../models");
 
 // Create a new district
 const createDistrict = async (req, res) => {
