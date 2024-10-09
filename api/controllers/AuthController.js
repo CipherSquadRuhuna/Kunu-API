@@ -41,7 +41,7 @@ const register = async (req, res) => {
   const { phone_number } = req.body;
 
   const user = await isUserAlreadyExist(phone_number);
-  if (!user) throw new Error("Phone number is already exist!");
+  if (user) throw new Error("Phone number is already exist!");
 
   const otp_code = Math.floor(Math.random() * 100000);
   const newUser = await createUser({ phone_number: phone_number, otp_code });
