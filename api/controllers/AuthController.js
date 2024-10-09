@@ -17,9 +17,18 @@ const login = async (req, res) => {
   const user = await findUserByPhoneNumber(phone_number);
   if (!user) throw new Error("Invalid email or password");
 
+  // return if the user profile is not verified
+  if (!user.is_verified) throw new Error("User profile is not verified");
+
+  // ask to set password if the user is not set the password
+  if (!user.password) throw new Error("Please set the password");
+
   // check password
   const isauth = comparePassword(password, user.password);
   if (!isauth) throw new Error("Invalid email or password");
+
+  // check is nic and name is set
+  if (!user.name || !user.nic) throw new Error("Please set the name and NIC");
 
   const token = generateToken({ id: user.id }, "1h");
 
@@ -62,6 +71,9 @@ const verifyOTP = async (req, res) => {
 
   const user = await findUserByPhoneNumber(phone_number);
   if (!user) throw new Error("Invalid phone number");
+
+  // check already verified
+  if (user.is_verified) throw new Error("User already verified");
 
   if (user.otp_code !== otp) {
     // todo: increase otp attempt
