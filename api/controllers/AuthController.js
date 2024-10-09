@@ -1,5 +1,3 @@
-const db = require("../models/index.js");
-
 const {
   findUserById,
   findUserByPhoneNumber,
