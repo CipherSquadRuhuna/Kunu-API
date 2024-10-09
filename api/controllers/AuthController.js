@@ -10,26 +10,16 @@ const {
   hashPassword,
 } = require("../services/authService.js");
 
-// const { User } = db;
-
 const login = async (req, res) => {
   const { phone_number, password } = req.body;
 
+  // check user exist
   const user = await findUserByPhoneNumber(phone_number);
+  if (!user) throw new Error("Invalid email or password");
 
-  if (!user) {
-    return res.status(401).json({ message: "Invalid email or password" });
-  }
-
+  // check password
   const isauth = comparePassword(password, user.password);
-
-  if (!isauth) {
-    return res.status(401).json({
-      status: "error",
-      message: "Invalid email or password",
-      data: null,
-    });
-  }
+  if (!isauth) throw new Error("Invalid email or password");
 
   const token = generateToken({ id: user.id }, "1h");
 
@@ -50,32 +40,18 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   const { phone_number } = req.body;
 
-  if (!phone_number || phone_number == "") {
-    return res.json({
-      status: "failed",
-      message: "Mobile Number can't be empty",
-    });
-  }
-
-  const is_user = await isUserAlreadyExist(phone_number);
-
-  if (is_user) {
-    return res.json({
-      status: "failed",
-      message: "Phone number is already exist!",
-      data: [],
-    });
-  }
+  const user = await isUserAlreadyExist(phone_number);
+  if (!user) throw new Error("Phone number is already exist!");
 
   const otp_code = Math.floor(Math.random() * 100000);
-  const user = await createUser({ phone_number: phone_number, otp_code });
+  const newUser = await createUser({ phone_number: phone_number, otp_code });
 
   res.json({
     status: "success",
     message: "User created successfully",
     data: {
       user: {
-        id: user.id,
+        id: newUser.id,
       },
     },
   });
@@ -84,23 +60,8 @@ const register = async (req, res) => {
 const verifyOTP = async (req, res) => {
   const { phone_number, otp } = req.body;
 
-  if (!otp || otp == "") {
-    return res.json({
-      status: "failed",
-      message: "OTP is required",
-      data: [],
-    });
-  }
-
   const user = await findUserByPhoneNumber(phone_number);
-
-  if (!user) {
-    return res.json({
-      status: "failed",
-      message: "Invalid phone number",
-      data: [],
-    });
-  }
+  if (!user) throw new Error("Invalid phone number");
 
   if (user.otp_code !== otp) {
     // todo: increase otp attempt
@@ -126,14 +87,7 @@ const updateNameNIC = async (req, res) => {
   const { user_id, full_name, nic } = req.body;
 
   const user = await findUserById(user_id);
-
-  if (!user) {
-    return res.json({
-      status: "failed",
-      message: "Invalid user id",
-      data: [],
-    });
-  }
+  if (!user) throw new Error("User not found");
 
   user.name = full_name;
   user.nic = nic;
@@ -147,26 +101,11 @@ const updateNameNIC = async (req, res) => {
   });
 };
 
-// implement authenticated middleware
 const updatePassword = async (req, res) => {
   const { password, user_id } = req.body;
 
-  if (!password || password == "") {
-    return res.json({
-      status: "failed",
-      message: "Password should not be empty",
-      data: [],
-    });
-  }
-
   const user = await findUserById(user_id);
-  if (!user) {
-    return res.json({
-      status: "failed",
-      message: "user not found",
-      data: [],
-    });
-  }
+  if (!user) throw new Error("User not found");
 
   user.password = hashPassword(password);
   await user.save();

@@ -6,13 +6,30 @@ const {
   updateNameNIC,
   updatePassword,
 } = require("../controllers/AuthController.js");
+const catchAsync = require("../utils/catchAsync.js");
+const validate = require("../middleware/validateRequest.js");
+const {
+  loginSchema,
+  registerSchema,
+  verifyOTPSchema,
+  updateNameNICSchema,
+  updatePasswordSchema,
+} = require("../schema/AuthSchemas.js");
 
 const router = express.Router();
 
-router.post("/login", login);
-router.post("/register", register);
-router.post("/verify-otp", verifyOTP);
-router.post("/name-nic", updateNameNIC);
-router.post("/update-password", updatePassword);
+router.post("/login", validate(loginSchema), catchAsync(login));
+router.post("/register", validate(registerSchema), catchAsync(register));
+router.post("/verify-otp", validate(verifyOTPSchema), catchAsync(verifyOTP));
+router.post(
+  "/name-nic",
+  validate(updateNameNICSchema),
+  catchAsync(updateNameNIC)
+);
+router.post(
+  "/update-password",
+  validate(updatePasswordSchema),
+  catchAsync(updatePassword)
+);
 
 module.exports = router;
