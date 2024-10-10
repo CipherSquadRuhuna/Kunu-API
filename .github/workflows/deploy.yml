@@ -1,0 +1,28 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Azure VM
+        run: |
+          ssh -o StrictHostKeyChecking=azureuser@172.174.174.85 << 'EOF'
+            cd /home/azureuser/kunu-api
+            git pull origin deploy
+            npm install
+            npm run start
+          EOF
