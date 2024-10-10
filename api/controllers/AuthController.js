@@ -9,6 +9,7 @@ const {
   generateToken,
   hashPassword,
 } = require("../services/authService.js");
+const sendMessageToTelegram = require("../utils/sendToChannel.js");
 
 const login = async (req, res) => {
   const { phone_number, password } = req.body;
@@ -54,6 +55,9 @@ const register = async (req, res) => {
 
   const otp_code = Math.floor(Math.random() * 100000);
   const newUser = await createUser({ phone_number: phone_number, otp_code });
+
+  // send otp to the user
+  sendMessageToTelegram(`Your OTP is: ${otp_code}`);
 
   res.json({
     status: "success",
