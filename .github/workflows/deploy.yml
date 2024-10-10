@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to Azure VM
         run: |
-          ssh -o StrictHostKeyChecking=azureuser@172.174.174.85 << 'EOF'
+          ssh -o StrictHostKeyChecking=no azureuser@172.174.174.85 << 'EOF'
             cd /home/azureuser/kunu-api
             git pull origin deploy
             npm install
