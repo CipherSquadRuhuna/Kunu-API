@@ -24,10 +24,21 @@ jobs:
           ssh -o StrictHostKeyChecking=no azureuser@172.174.174.85 << 'EOF'
             cd /home/azureuser/Kunu-API/api
             git pull origin deploy
-            # undo current migrations
+            
+            # Undo current migrations
             npx sequelize-cli db:migrate:undo:all
-            # apply new migrations
+            
+            # Apply new migrations
             npx sequelize-cli db:migrate
+      
+            # Install dependencies
             npm install
-            npm run start
+      
+            # Check if the app is already being managed by pm2 and restart it, or start if not
+            if pm2 list | grep -q "kunu-api"; then
+              pm2 restart kunu-api
+            else
+              pm2 start npm --name "kunu-api" -- run start
+            fi
           EOF
+
