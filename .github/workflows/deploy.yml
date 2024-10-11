@@ -34,11 +34,7 @@ jobs:
             # Install dependencies
             npm install
       
-            # Check if the app is already being managed by pm2 and restart it, or start if not
-            if pm2 list | grep -q "kunu-api"; then
-              pm2 restart kunu-api
-            else
-              pm2 start npm --name "kunu-api" -- run start
-            fi
+            pm2 restart kunu-api
+           
           EOF
 
