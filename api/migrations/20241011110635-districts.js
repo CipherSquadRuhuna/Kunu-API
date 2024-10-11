@@ -3,8 +3,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("minicipal_council", {
-      m_id: {
+    await queryInterface.createTable("districts", {
+      district_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -13,14 +13,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-      },
-      district_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "districts",
-          key: "district_id",
-        },
       },
       created_at: {
         type: Sequelize.DATE,
@@ -34,6 +26,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("minicipal_council");
+    await queryInterface.dropTable("districts");
   },
 };
