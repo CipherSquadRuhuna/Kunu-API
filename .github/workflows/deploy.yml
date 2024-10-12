@@ -28,7 +28,7 @@ jobs:
             git pull origin deploy
 
             #login to mysql database
-            mysql -u root -p$MYSQL_PASSWORD -e "DROP DATABASE IF EXISTS kunu; CREATE DATABASE kunu;"
+            mysql -u root -p $MYSQL_PASSWORD -e "DROP DATABASE IF EXISTS kunu; CREATE DATABASE kunu;"
             
             # Apply new migrations
             npx sequelize-cli db:migrate
