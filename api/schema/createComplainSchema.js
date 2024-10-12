@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const createComplainSchema = Joi.object({
+const createGarbageComplainSchema = Joi.object({
   user_id: Joi.number().required().messages({
     "number.base": "User ID must be a number",
     "any.required": "User ID is required",
@@ -13,4 +13,19 @@ const createComplainSchema = Joi.object({
   remarks: Joi.string().optional(),
 });
 
-module.exports = { createComplainSchema };
+const createServiceComplainSchema = Joi.object({
+  user_id: Joi.number().required().messages({
+    "number.base": "User ID must be a number",
+    "any.required": "User ID is required",
+  }),
+  municipal_id: Joi.number().required().messages({
+    "number.base": "Municipality ID must be a number",
+    "any.required": "Municipality ID is required",
+  }),
+  complain: Joi.string().required().messages({
+    "string.base": "Complain must be a string",
+    "string.empty": "Complain can't be empty",
+    "any.required": "Complain is required",
+  }),
+});
+module.exports = { createGarbageComplainSchema, createServiceComplainSchema };
