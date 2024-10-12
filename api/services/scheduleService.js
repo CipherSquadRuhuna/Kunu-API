@@ -5,6 +5,7 @@ const getCollectionSchedules = async () => {
 };
 
 const getCollectionScheduleByDivision = async (division) => {
+  console.log(division);
   return await CollectionSchedule.findAll({
     where: {
       division,
