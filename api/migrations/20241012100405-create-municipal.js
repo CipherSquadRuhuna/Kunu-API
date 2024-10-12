@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("minicipal_council", {
+    await queryInterface.createTable("municipal_councils", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -22,12 +22,12 @@ module.exports = {
           key: "id",
         },
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal(
@@ -38,6 +38,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("minicipal_council", null, {});
+    await queryInterface.bulkDelete("municipal_councils", null, {});
   },
 };
