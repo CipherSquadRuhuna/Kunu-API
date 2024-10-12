@@ -133,4 +133,28 @@ const updatePassword = async (req, res) => {
   });
 };
 
-module.exports = { login, register, verifyOTP, updateNameNIC, updatePassword };
+const updateDistrict = async (req, res) => {
+  const { district, munimunicipal, user_id } = req.body;
+
+  const user = await findUserById(user_id);
+  if (!user) throw new Error("User not found");
+
+  user.district = district;
+  user.municipal = munimunicipal;
+  await user.save();
+
+  res.json({
+    status: "success",
+    message: "District updated successfuly.",
+    data: [],
+  });
+};
+
+module.exports = {
+  login,
+  register,
+  verifyOTP,
+  updateNameNIC,
+  updatePassword,
+  updateDistrict,
+};
