@@ -17,6 +17,7 @@ app.get("/", checkServerStatus);
 app.use("/api/v1/auth", Authroutes);
 app.use("/api/v1/complains", ComplainRoutes);
 app.use("/api/v1/data", DataRoutes);
+app.use("/api/v1/schedule", require("./routes/ScheduleRoutes.js"));
 app.use(ErrorHandleMiddleware);
 
 module.exports = { app };
