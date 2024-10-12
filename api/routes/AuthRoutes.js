@@ -5,6 +5,7 @@ const {
   verifyOTP,
   updateNameNIC,
   updatePassword,
+  updateDistrict,
 } = require("../controllers/AuthController.js");
 const catchAsync = require("../utils/catchAsync.js");
 const validate = require("../middleware/validateRequest.js");
@@ -14,6 +15,7 @@ const {
   verifyOTPSchema,
   updateNameNICSchema,
   updatePasswordSchema,
+  updateDistrictSchema,
 } = require("../schema/AuthSchemas.js");
 
 const router = express.Router();
@@ -30,6 +32,12 @@ router.post(
   "/update-password",
   validate(updatePasswordSchema),
   catchAsync(updatePassword)
+);
+
+router.post(
+  "/district-municipal",
+  validate(updateDistrictSchema),
+  catchAsync(updateDistrict)
 );
 
 module.exports = router;
