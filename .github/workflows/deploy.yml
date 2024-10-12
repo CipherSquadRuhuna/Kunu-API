@@ -20,13 +20,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Deploy to Azure VM
+        env:
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} 
         run: |
           ssh -o StrictHostKeyChecking=no azureuser@172.174.174.85 << 'EOF'
             cd /home/azureuser/Kunu-API/api
             git pull origin deploy
-            
-            # Undo current migrations
-            npx sequelize-cli db:migrate:undo:all
+
+            #login to mysql database
+            mysql -u root -p $MYSQL_PASSWORD -e "DROP DATABASE IF EXISTS kunu; CREATE DATABASE kunu;"
             
             # Apply new migrations
             npx sequelize-cli db:migrate
