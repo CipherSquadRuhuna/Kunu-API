@@ -94,10 +94,26 @@ const updatePasswordSchema = Joi.object({
   }),
 });
 
+const updateDistrictSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.empty": "User ID is required",
+    "any.required": "User ID is required",
+  }),
+  district: Joi.string().required().messages({
+    "string.empty": "District is required",
+    "any.required": "District is required",
+  }),
+  municipal_council: Joi.string().required().messages({
+    "string.empty": "Municipal council is required",
+    "any.required": "Municipal council is required",
+  }),
+});
+
 module.exports = {
   registerSchema,
   verifyOTPSchema,
   updateNameNICSchema,
   updatePasswordSchema,
   loginSchema,
+  updateDistrictSchema,
 };
