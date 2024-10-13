@@ -18,6 +18,7 @@ app.use("/api/v1/auth", Authroutes);
 app.use("/api/v1/complains", ComplainRoutes);
 app.use("/api/v1/data", DataRoutes);
 app.use("/api/v1/schedule", require("./routes/ScheduleRoutes.js"));
+app.use("/api/v1/request-pickup", require("./routes/RequestPickupRoutes.js"));
 app.use(ErrorHandleMiddleware);
 
 module.exports = { app };
