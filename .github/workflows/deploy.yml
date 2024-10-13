@@ -30,7 +30,7 @@ jobs:
             git pull origin deploy
 
             #login to mysql database
-            mysql -h 127.0.0.1 -u root -p '$MYSQL_PASSWORD' -e "DROP DATABASE IF EXISTS kunu_db; CREATE DATABASE kunu_db;"
+            mysql -h 127.0.0.1 -P 3306 -u root -p'12345' --ssl-mode=DISABLED -e "DROP DATABASE IF EXISTS kunu_db; CREATE DATABASE kunu_db;"
             
             # Apply new migrations
             npx sequelize-cli db:migrate
