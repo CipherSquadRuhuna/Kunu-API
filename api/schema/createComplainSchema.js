@@ -18,7 +18,7 @@ const createServiceComplainSchema = Joi.object({
     "number.base": "User ID must be a number",
     "any.required": "User ID is required",
   }),
-  municipal_id: Joi.number().required().messages({
+  municiple_councial_id: Joi.number().required().messages({
     "number.base": "Municipality ID must be a number",
     "any.required": "Municipality ID is required",
   }),

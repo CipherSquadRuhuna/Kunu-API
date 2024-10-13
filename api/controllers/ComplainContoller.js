@@ -1,5 +1,6 @@
 const { findUserById } = require("../services/userService");
 const { GarbageComplain } = require("../models");
+const { ServiceComplain } = require("../models");
 
 const createGrabageComplain = async (req, res) => {
   const { user_id, location, attached_image, remarks } = req.body;
@@ -24,20 +25,20 @@ const createGrabageComplain = async (req, res) => {
 };
 
 const createServiceComplain = async (req, res) => {
-  const { maniciple_id, remarks, user_id } = req.body;
+  const { municiple_councial_id, complain, user_id } = req.body;
 
-  const complain = await ServiceComplain.create({
+  const new_complain = await ServiceComplain.create({
     user_id,
-    maniciple_id,
-    remarks,
+    municiple_councial_id,
+    complain,
   });
+
+  console.log(new_complain);
 
   res.json({
     status: "success",
     message: "Complain created successfully",
-    data: {
-      complain,
-    },
+    data: [new_complain],
   });
 };
 
