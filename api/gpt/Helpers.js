@@ -8,14 +8,24 @@ const AskGPT4 = async (message, companies) => {
       {
         role: "system",
         content: `You are expert at wastage management, 
-        suggest me some ways to manage given wastage, also consider 
-        the collectors given below and incoperate those data for the answer as well, 
-        don't use markdown instead use only text.
+        suggest list ways to manage given wastage. give the answer as a list of steps. in the following JSON format:
+
+        methods:[
+          {
+            method: "method1",
+            description: "description of method1"
+          },
+          {
+            method: "method2",
+            description: "description of method2"
+          },
+          {
+            method: "method3",
+            description: "description of method3"
+          }
+        ]
         
-        companies:  ${companies.join(", ")}
-        
-        --
-        Here are the stpes..
+      
         
         `,
       },
@@ -24,7 +34,7 @@ const AskGPT4 = async (message, companies) => {
         content: message,
       },
     ]);
-    console.log(result.choices[0].message);
+
     return result.choices[0].message;
   } catch (error) {
     console.log(error);
