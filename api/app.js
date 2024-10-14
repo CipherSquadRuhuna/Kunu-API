@@ -24,6 +24,10 @@ app.use("/api/webhook/message", (req, res) => {
   console.log(req.body);
   res.json({ message: "ok" });
 });
+app.use("/api/v1/webhook/subscription", (req, res) => {
+  console.log(req.body);
+  res.json({ message: "ok" });
+});
 app.use(ErrorHandleMiddleware);
 
 module.exports = { app };
