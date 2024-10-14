@@ -1,5 +1,8 @@
 const fs = require("fs");
 const axios = require("axios");
+const { Collectors } = require("../models");
+const { Op } = require("sequelize");
+const { AskGPT4 } = require("../gpt/Helpers");
 
 const predictCollectionCenters = async (req, res) => {
   //   create file stream
@@ -16,11 +19,33 @@ const predictCollectionCenters = async (req, res) => {
   };
 
   const response = await axios(config);
+
+  const prediction = response.data.predictions[0].tagName;
+
+  //   find 5 nearest collection centers
+  const centers = await Collectors.findAll({
+    where: {
+      waste_types: {
+        [Op.substring]: prediction,
+      },
+    },
+    limit: 5,
+  });
+
+  const chat = await AskGPT4(
+    `I s a ${prediction} waste, give me a list of stpes to  dispose it`,
+    centers.map((center) => center.name)
+  );
+
+  //   console.log(chat);
+
   res.json({
     status: "success",
     message: "Prediction successful",
     data: {
       prediction: response.data.predictions[0].tagName,
+      centers,
+      chat,
     },
   });
   console.log(response.data.predictions[0].tagName);
