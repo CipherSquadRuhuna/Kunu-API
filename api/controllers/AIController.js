@@ -45,7 +45,7 @@ const predictCollectionCenters = async (req, res) => {
     data: {
       prediction: response.data.predictions[0].tagName,
       centers,
-      chat,
+      wasted_disposal_steps: JSON.parse(chat.content),
     },
   });
   console.log(response.data.predictions[0].tagName);
