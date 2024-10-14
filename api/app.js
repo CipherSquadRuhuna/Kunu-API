@@ -6,6 +6,7 @@ const Authroutes = require("./routes/AuthRoutes.js");
 const ComplainRoutes = require("./routes/ComplainRoutes.js");
 const DataRoutes = require("./routes/DataRoutes.js");
 const ErrorHandleMiddleware = require("./middleware/ErrorHandleeMiddleware.js");
+const axios = require("axios");
 
 config();
 
@@ -26,7 +27,6 @@ app.use("/api/v1/request-pickup", require("./routes/RequestPickupRoutes.js"));
 // });
 
 app.use("/api/webhook/message/send", (req, res) => {
-  var axios = require("axios");
   var data = JSON.stringify({
     applicationId: "APP_066293",
     password: "4c49aba32fb8a656f02f8fbf2d443ba9",
