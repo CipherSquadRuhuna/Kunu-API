@@ -66,7 +66,7 @@ app.use("/api/v1/webhook/subscription", (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://api.dialog.lk/subscription/send",
+    url: "https://api.dialog.lk/ subscription/send",
     headers: {
       "Content-Type": "application/json",
     },
