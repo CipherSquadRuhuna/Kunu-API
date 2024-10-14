@@ -1,0 +1,47 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Deploy to Azure VM
+        env:
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} 
+        run: |
+
+          ssh -o StrictHostKeyChecking=no azureuser@172.174.174.85 << 'EOF'
+
+            cd /home/azureuser/Kunu-API/api
+            git pull origin deploy
+
+            #login to mysql database
+            mysql -h 127.0.0.1 -P 3306 -u root -p'12345' --ssl-mode=DISABLED -e "DROP DATABASE IF EXISTS kunu_db; CREATE DATABASE kunu_db;"
+            
+            # Apply new migrations
+            npx sequelize-cli db:migrate
+
+            #seed database with new data
+            npx sequelize-cli db:seed:all
+      
+            # Install dependencies
+            npm ci
+      
+            pm2 restart kunu-api
+           
+          EOF
+

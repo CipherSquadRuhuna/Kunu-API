@@ -1,5 +1,3 @@
-const db = require("../models/index.js");
-
 const {
   findUserById,
   findUserByPhoneNumber,
@@ -11,27 +9,27 @@ const {
   generateToken,
   hashPassword,
 } = require("../services/authService.js");
-
-// const { User } = db;
+const sendMessageToTelegram = require("../utils/sendToChannel.js");
 
 const login = async (req, res) => {
   const { phone_number, password } = req.body;
 
+  // check user exist
   const user = await findUserByPhoneNumber(phone_number);
+  if (!user) throw new Error("Invalid email or password");
 
-  if (!user) {
-    return res.status(401).json({ message: "Invalid email or password" });
-  }
+  // return if the user profile is not verified
+  if (!user.is_verified) throw new Error("User profile is not verified");
 
+  // ask to set password if the user is not set the password
+  if (!user.password) throw new Error("Please set the password");
+
+  // check password
   const isauth = comparePassword(password, user.password);
+  if (!isauth) throw new Error("Invalid email or password");
 
-  if (!isauth) {
-    return res.status(401).json({
-      status: "error",
-      message: "Invalid email or password",
-      data: null,
-    });
-  }
+  // check is nic and name is set
+  if (!user.name || !user.nic) throw new Error("Please set the name and NIC");
 
   const token = generateToken({ id: user.id }, "1h");
 
@@ -52,32 +50,21 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   const { phone_number } = req.body;
 
-  if (!phone_number || phone_number == "") {
-    return res.json({
-      status: "failed",
-      message: "Mobile Number can't be empty",
-    });
-  }
-
-  const is_user = await isUserAlreadyExist(phone_number);
-
-  if (is_user) {
-    return res.json({
-      status: "failed",
-      message: "Phone number is already exist!",
-      data: [],
-    });
-  }
+  const user = await isUserAlreadyExist(phone_number);
+  if (user) throw new Error("Phone number is already exist!");
 
   const otp_code = Math.floor(Math.random() * 100000);
-  const user = await createUser({ phone_number: phone_number, otp_code });
+  const newUser = await createUser({ phone_number: phone_number, otp_code });
+
+  // send otp to the user
+  sendMessageToTelegram(`Your OTP is: ${otp_code}`);
 
   res.json({
     status: "success",
     message: "User created successfully",
     data: {
       user: {
-        id: user.id,
+        id: newUser.id,
       },
     },
   });
@@ -86,23 +73,11 @@ const register = async (req, res) => {
 const verifyOTP = async (req, res) => {
   const { phone_number, otp } = req.body;
 
-  if (!otp || otp == "") {
-    return res.json({
-      status: "failed",
-      message: "OTP is required",
-      data: [],
-    });
-  }
-
   const user = await findUserByPhoneNumber(phone_number);
+  if (!user) throw new Error("Invalid phone number");
 
-  if (!user) {
-    return res.json({
-      status: "failed",
-      message: "Invalid phone number",
-      data: [],
-    });
-  }
+  // check already verified
+  if (user.is_verified) throw new Error("User already verified");
 
   if (user.otp_code !== otp) {
     // todo: increase otp attempt
@@ -128,14 +103,7 @@ const updateNameNIC = async (req, res) => {
   const { user_id, full_name, nic } = req.body;
 
   const user = await findUserById(user_id);
-
-  if (!user) {
-    return res.json({
-      status: "failed",
-      message: "Invalid user id",
-      data: [],
-    });
-  }
+  if (!user) throw new Error("User not found");
 
   user.name = full_name;
   user.nic = nic;
@@ -149,26 +117,11 @@ const updateNameNIC = async (req, res) => {
   });
 };
 
-// implement authenticated middleware
 const updatePassword = async (req, res) => {
   const { password, user_id } = req.body;
 
-  if (!password || password == "") {
-    return res.json({
-      status: "failed",
-      message: "Password should not be empty",
-      data: [],
-    });
-  }
-
   const user = await findUserById(user_id);
-  if (!user) {
-    return res.json({
-      status: "failed",
-      message: "user not found",
-      data: [],
-    });
-  }
+  if (!user) throw new Error("User not found");
 
   user.password = hashPassword(password);
   await user.save();
@@ -180,4 +133,28 @@ const updatePassword = async (req, res) => {
   });
 };
 
-module.exports = { login, register, verifyOTP, updateNameNIC, updatePassword };
+const updateDistrict = async (req, res) => {
+  const { district, munimunicipal, user_id } = req.body;
+
+  const user = await findUserById(user_id);
+  if (!user) throw new Error("User not found");
+
+  user.district = district;
+  user.municipal = munimunicipal;
+  await user.save();
+
+  res.json({
+    status: "success",
+    message: "District updated successfuly.",
+    data: [],
+  });
+};
+
+module.exports = {
+  login,
+  register,
+  verifyOTP,
+  updateNameNIC,
+  updatePassword,
+  updateDistrict,
+};
