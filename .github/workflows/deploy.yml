@@ -39,7 +39,7 @@ jobs:
             npx sequelize-cli db:seed:all
       
             # Install dependencies
-            npm install
+            npm ci
       
             pm2 restart kunu-api
            
