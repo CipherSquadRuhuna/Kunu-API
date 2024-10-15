@@ -10,6 +10,7 @@ const {
   hashPassword,
 } = require("../services/authService.js");
 const sendMessageToTelegram = require("../utils/sendToChannel.js");
+const axios = require("axios");
 
 const login = async (req, res) => {
   const { phone_number, password } = req.body;
@@ -58,6 +59,34 @@ const register = async (req, res) => {
 
   // send otp to the user
   sendMessageToTelegram(`Your OTP is: ${otp_code}`);
+
+  // tempory replace phone 0 as "+94"
+  const updated_number = phone_number.replace("0", "94");
+  console.log(updated_number);
+
+  const data = JSON.stringify({
+    message: `Your OTP is: ${otp_code}`,
+    applicationId: "APP_066293",
+    password: "4c49aba32fb8a656f02f8fbf2d443ba9",
+    destinationAddresses: [`tel:${updated_number}`],
+  });
+
+  const config = {
+    method: "post",
+    url: "https://api.dialog.lk/sms/send",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   res.json({
     status: "success",

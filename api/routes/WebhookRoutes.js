@@ -5,14 +5,14 @@ routes.post("/subscription", (req, res) => {
   var data = JSON.stringify({
     applicationId: "APP_066293",
     password: "4c49aba32fb8a656f02f8fbf2d443ba9",
-    subscriberId: "tel:94755383869",
     version: "1.0",
-    action: "0",
+    action: "1",
+    subscriberId: "tel:94771242254",
   });
 
   var config = {
     method: "post",
-    url: "https://api.dialog.lk/subscription/send",
+    url: "http://localhost:7000/subscription/send",
     headers: {
       "Content-Type": "application/json",
     },
@@ -27,6 +27,11 @@ routes.post("/subscription", (req, res) => {
     .catch(function (error) {
       console.log(error);
     });
+});
+
+routes.post("/message", (req, res) => {
+  console.log(req.body);
+  res.send("ok");
 });
 
 module.exports = routes;
