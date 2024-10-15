@@ -1,11 +1,12 @@
 const router = require("express").Router();
 const axios = require("axios");
+const { IDEAPRO_APP_ID, IDEAPRO_APP_PASSWORD } = process.env;
 
 router.post("/send", (req, res) => {
   const data = JSON.stringify({
     message: "Hello!",
-    applicationId: "APP_066293",
-    password: "4c49aba32fb8a656f02f8fbf2d443ba9",
+    applicationId: IDEAPRO_APP_ID,
+    password: IDEAPRO_APP_PASSWORD,
     destinationAddresses: ["tel:94771242254"],
   });
 
