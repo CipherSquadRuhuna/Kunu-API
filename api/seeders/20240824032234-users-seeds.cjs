@@ -13,7 +13,7 @@ module.exports = {
         is_verified: true,
         district: "Colombo",
         municipal_council: "Colombo MC",
-        password: "12345678", // Use a hashed password for security
+        password: 12345678, // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
