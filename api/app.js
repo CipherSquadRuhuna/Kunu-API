@@ -26,6 +26,7 @@ app.use("/api/v1/subscription", require("./routes/SubscriptionRoutes.js"));
 app.use("/api/v1/ai", require("./routes/AIRoutes.js"));
 
 // webhooks
+app.use("/api/v1/webhook", require("./routes/SubscriptionWebhookRoutes.js"));
 app.use("/api/webhook", require("./routes/WebhookRoutes.js"));
 
 app.use(ErrorHandleMiddleware);
