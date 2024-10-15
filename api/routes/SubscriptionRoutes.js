@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios");
+const { IDEAPRO_APP_ID, IDEAPRO_APP_PASSWORD } = process.env;
 
 router.post("/send", async (req, res) => {
   const { phone_number } = req.body;
