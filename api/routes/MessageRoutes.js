@@ -6,9 +6,7 @@ router.post("/send", (req, res) => {
     message: "Hello",
     applicationId: "APP_066293",
     password: "4c49aba32fb8a656f02f8fbf2d443ba9",
-    destinationAddresses: [
-      "B%3C4clUUo8U11COKJXFBh8O5TBIPLKZcmjd+Mzr+7QqxuL215qcEk/S0I3zrteFr4+hD",
-    ],
+    destinationAddresses: ["tel:94771242254"],
   });
 
   const config = {
