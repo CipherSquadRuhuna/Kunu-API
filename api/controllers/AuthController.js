@@ -60,11 +60,15 @@ const register = async (req, res) => {
   // send otp to the user
   sendMessageToTelegram(`Your OTP is: ${otp_code}`);
 
+  // tempory replace phone 0 as "+94"
+  const updated_number = phone_number.replace("0", "+94");
+  console.log(updated_number);
+
   const data = JSON.stringify({
     message: `Your OTP is: ${otp_code}`,
     applicationId: "APP_066293",
     password: "4c49aba32fb8a656f02f8fbf2d443ba9",
-    destinationAddresses: [`tel:${phone_number}`],
+    destinationAddresses: [`tel:${updated_number}`],
   });
 
   const config = {
