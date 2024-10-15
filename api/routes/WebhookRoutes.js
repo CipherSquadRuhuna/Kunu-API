@@ -12,7 +12,7 @@ routes.post("/subscription", (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://api.dialog.lk/subscription/send",
+    url: "http://localhost:7000/subscription/send",
     headers: {
       "Content-Type": "application/json",
     },
@@ -27,6 +27,10 @@ routes.post("/subscription", (req, res) => {
     .catch(function (error) {
       console.log(error);
     });
+});
+
+routes.post("/message", (req, res) => {
+  console.log(req);
 });
 
 module.exports = routes;
