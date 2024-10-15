@@ -7,13 +7,13 @@ router.post("/send", (req, res) => {
     applicationId: "APP_066293",
     password: "4c49aba32fb8a656f02f8fbf2d443ba9",
     destinationAddresses: [
-      "B%3C4clUUo8U11COKJXFBh8O5TBIPLKZcmjd+Mzr+7QqxuL215qcEk/S0I3zrteFr4+hD",
+      "tel:B%3C4clUUo8U11COKJXFBh8O5TBIPLKZcmjd+Mzr+7QqxuL215qcEk/S0I3zrteFr4+hD",
     ],
   });
 
   const config = {
     method: "post",
-    url: "https://api.dialog.lk/subscription/send",
+    url: "https://api.dialog.lk/sms/send",
     headers: {
       "Content-Type": "application/json",
     },

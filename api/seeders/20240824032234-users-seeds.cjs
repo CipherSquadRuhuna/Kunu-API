@@ -10,9 +10,10 @@ module.exports = {
       {
         name: "John Doe",
         phone_number: "0711287298",
+        is_verified: true,
         district: "Colombo",
         municipal_council: "Colombo MC",
-        password: 12345678, // Use a hashed password for security
+        password: "12345678", // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -21,13 +22,15 @@ module.exports = {
         phone_number: "0987654321",
         district: "Galle",
         municipal_council: "Galle MC",
-        password: hashedPassword1, // Use a hashed password for security
+        is_verified: true,
+        password: "hashedPassword1", // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         name: "Alice Johnson",
-        phone_number: hashedPassword1,
+        phone_number: "0987654321",
+        is_verified: true,
         district: "Kandy",
         municipal_council: "Kandy MC",
         password: "hashed_password_3", // Use a hashed password for security
