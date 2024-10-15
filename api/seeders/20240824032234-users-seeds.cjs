@@ -7,7 +7,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     //  create bscrypt password
     const bcrypt = require("bcrypt");
-    const hashedPassword1 = await bcrypt.hash("password1", 10);
+    const hashedPassword1 = await bcrypt.hash("12345678", 10);
     await queryInterface.bulkInsert("users", [
       {
         name: "John Doe",
@@ -15,7 +15,7 @@ module.exports = {
         is_verified: true,
         district: "Colombo",
         municipal_council: "Colombo MC",
-        password: hashPassword(12345678), // Use a hashed password for security
+        password: hashedPassword1, // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -25,7 +25,7 @@ module.exports = {
         district: "Galle",
         is_verified: true,
         municipal_council: "Galle MC",
-        password: "hashedPassword1", // Use a hashed password for security
+        password: hashedPassword1, // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -35,7 +35,7 @@ module.exports = {
         is_verified: true,
         district: "Kandy",
         municipal_council: "Kandy MC",
-        password: "hashed_password_3", // Use a hashed password for security
+        password: hashedPassword1, // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
