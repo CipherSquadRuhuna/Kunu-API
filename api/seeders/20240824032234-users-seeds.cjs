@@ -9,10 +9,10 @@ module.exports = {
     await queryInterface.bulkInsert("users", [
       {
         name: "John Doe",
-        phone_number: "1234567890",
+        phone_number: "0711287298",
         district: "Colombo",
         municipal_council: "Colombo MC",
-        password: hashedPassword1, // Use a hashed password for security
+        password: 12345678, // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
