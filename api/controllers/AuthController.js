@@ -61,7 +61,7 @@ const register = async (req, res) => {
   sendMessageToTelegram(`Your OTP is: ${otp_code}`);
 
   // tempory replace phone 0 as "+94"
-  const updated_number = phone_number.replace("0", "+94");
+  const updated_number = phone_number.replace("0", "94");
   console.log(updated_number);
 
   const data = JSON.stringify({
