@@ -79,11 +79,9 @@ const register = async (req, res) => {
   axios(config)
     .then(function (response) {
       console.log(JSON.stringify(response.data));
-      res.json(response.data);
     })
     .catch(function (error) {
       console.log(error);
-      res.json(error);
     });
 
   res.json({
