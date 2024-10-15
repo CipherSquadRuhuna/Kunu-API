@@ -22,6 +22,7 @@ app.use("/api/v1/schedule", require("./routes/ScheduleRoutes.js"));
 app.use("/api/v1/request-pickup", require("./routes/RequestPickupRoutes.js"));
 app.use("/api/v1/payment", require("./routes/PaymentRoutes.js"));
 app.use("/api/v1/message", require("./routes/MessageRoutes.js"));
+app.use("/api/v1/subscription", require("./routes/SubscriptionRoutes.js"));
 app.use("/api/v1/ai", require("./routes/AIRoutes.js"));
 
 // webhooks
