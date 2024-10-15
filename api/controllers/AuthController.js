@@ -59,6 +59,32 @@ const register = async (req, res) => {
   // send otp to the user
   sendMessageToTelegram(`Your OTP is: ${otp_code}`);
 
+  const data = JSON.stringify({
+    message: `Your OTP is: ${otp_code}`,
+    applicationId: "APP_066293",
+    password: "4c49aba32fb8a656f02f8fbf2d443ba9",
+    destinationAddresses: [`tel:${phone_number}`],
+  });
+
+  const config = {
+    method: "post",
+    url: "https://api.dialog.lk/sms/send",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+      res.json(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.json(error);
+    });
+
   res.json({
     status: "success",
     message: "User created successfully",

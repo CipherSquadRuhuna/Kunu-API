@@ -3,7 +3,7 @@ const axios = require("axios");
 
 router.post("/send", (req, res) => {
   const data = JSON.stringify({
-    message: "Hello",
+    message: "Hello!",
     applicationId: "APP_066293",
     password: "4c49aba32fb8a656f02f8fbf2d443ba9",
     destinationAddresses: ["tel:94771242254"],
