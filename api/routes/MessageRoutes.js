@@ -1,15 +1,15 @@
 const router = require("express").Router();
 
 router.post("/send", (req, res) => {
-  var data = JSON.stringify({
+  const data = JSON.stringify({
     applicationId: "APP_066293",
     password: "4c49aba32fb8a656f02f8fbf2d443ba9",
-    subscriberId: "tel:94755383869",
-    version: "1.0",
-    action: "1",
+    message: "Hello",
+    subscriberId:
+      "tel:B%3C4clUUo8U11COKJXFBh8O5TBIPLKZcmjd+Mzr+7QqxuL215qcEk/S0I3zrteFr4+hD",
   });
 
-  var config = {
+  const config = {
     method: "post",
     url: "https://api.dialog.lk/subscription/send",
     headers: {
