@@ -1,5 +1,7 @@
 "use strict";
 
+const { hashPassword } = require("../services/authService");
+
 /** @type {import('sequelize-cli').Seed} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -13,7 +15,7 @@ module.exports = {
         is_verified: true,
         district: "Colombo",
         municipal_council: "Colombo MC",
-        password: 12345678, // Use a hashed password for security
+        password: hashPassword(12345678), // Use a hashed password for security
         createdAt: new Date(),
         updatedAt: new Date(),
       },
