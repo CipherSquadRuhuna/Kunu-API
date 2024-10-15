@@ -34,7 +34,7 @@ module.exports = {
       },
       {
         name: "Alice Johnson",
-        phone_number: "0771242254",
+        phone_number: "0771242253",
         is_verified: true,
         district: "Kandy",
         municipal_council: "Kandy MC",
