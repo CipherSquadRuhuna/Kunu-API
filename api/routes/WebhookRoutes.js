@@ -30,7 +30,8 @@ routes.post("/subscription", (req, res) => {
 });
 
 routes.post("/message", (req, res) => {
-  console.log(req);
+  console.log(req.body);
+  res.send("ok");
 });
 
 module.exports = routes;
